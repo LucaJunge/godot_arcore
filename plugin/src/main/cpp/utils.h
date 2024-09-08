@@ -3,6 +3,8 @@
 
 #include <android/log.h>
 #include <godot_cpp/variant/string.hpp>
+#include "godot_cpp/variant/transform3d.hpp"
+#include "godot_cpp/variant/projection.hpp"
 #include <jni.h>
 
 #define LOG_TAG "ARCoreExtension"
@@ -70,6 +72,44 @@ static inline godot::String jstring_to_string(JNIEnv *env, jstring source) {
         }
     }
     return godot::String();
+}
+
+static inline void transpose(const float p_matrix[16], float o_res[16])
+{
+// 0  1  2  3  
+// 4  5  6  7  
+// 8  9  10 11 
+// 12 13 14 15
+
+// 0  4  8  12  
+// 1  5  9  13  
+// 2  6  10 14 
+// 3  7  11 15
+    o_res[0]  = p_matrix[0]; o_res[1]  = p_matrix[4]; o_res[2]  = p_matrix[8];  o_res[3]  = p_matrix[12];
+    o_res[4]  = p_matrix[1]; o_res[5]  = p_matrix[5]; o_res[6]  = p_matrix[9];  o_res[7]  = p_matrix[13];
+    o_res[8]  = p_matrix[2]; o_res[9]  = p_matrix[6]; o_res[10] = p_matrix[10]; o_res[11] = p_matrix[14];
+    o_res[12] = p_matrix[3]; o_res[13] = p_matrix[7]; o_res[14] = p_matrix[11]; o_res[15] = p_matrix[15];
+}
+
+static inline godot::Projection to_godot_projection(const float p_matrix[16])
+{
+    return godot::Projection(
+            godot::Vector4(p_matrix[0], p_matrix[1], p_matrix[2], p_matrix[3]),
+            godot::Vector4(p_matrix[4], p_matrix[5], p_matrix[6], p_matrix[7]),
+            godot::Vector4(p_matrix[8], p_matrix[9], p_matrix[10], p_matrix[11]),
+            godot::Vector4(p_matrix[12], p_matrix[13], p_matrix[14], p_matrix[15])
+    );
+}
+
+static inline godot::Transform3D to_godot_transform(const float p_matrix[16])
+{
+    // Right-handed column major, right?
+    return godot::Transform3D(
+            godot::Vector3(p_matrix[0], p_matrix[1], p_matrix[2]),
+            godot::Vector3(p_matrix[4], p_matrix[5], p_matrix[6]),
+            godot::Vector3(p_matrix[8], p_matrix[9], p_matrix[10]),
+            godot::Vector3(p_matrix[12], p_matrix[13], p_matrix[14])
+    );
 }
 
 #endif // UTILS_H

@@ -34,9 +34,9 @@ namespace godot {
 
         ARCoreInterface();
         virtual ~ARCoreInterface();
-        void start();
         void _resume();
         void _pause();
+        void start();
 
         // Method overrides from XRInterface
         virtual XRInterface::TrackingStatus _get_tracking_status() const override;

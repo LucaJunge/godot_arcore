@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-
-    <!-- Limits app visibility in the Google Play Store to ARCore supported devices
-        (https://developers.google.com/ar/devices). -->
     <uses-feature android:name="android.hardware.camera.ar" />
 
     <queries>
@@ -40,9 +37,9 @@
             tools:replace="android:value"/>
 
         <!-- The minimal version code of ARCore APK required for an app using this SDK. -->
-        <!--<meta-data
+        <meta-data
             android:name="com.google.ar.core.min_apk_version"
-            android:value="220920000" />-->
+            android:value="220920000" />
 
         <meta-data
             android:name="org.godotengine.plugin.v2.${godotPluginName}"

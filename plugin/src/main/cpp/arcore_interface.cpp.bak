@@ -703,7 +703,7 @@ void ARCoreInterface::_process() {
                                 /*near=*/0.1f, /*far=*/1000.f,
                                 projection_mat);
 
-    m_projection = to_godot_projection(projection_mat);
+    // m_projection = to_godot_transform(projection_mat);
 
     m_background_renderer.process(*m_ar_session, *m_ar_frame, m_enable_depth_estimation);
     
